@@ -1,1 +1,1 @@
-web: gunicorn middle.py
+web: gunicorn middle.py:app --log-file -
