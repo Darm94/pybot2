@@ -1,13 +1,18 @@
-from flask import Flask
+#!/usr/bin/env python
+# pylint: disable=C0116,W0613
+# This program is dedicated to the public domain under the CC0 license.
+"""import flask"""
+from convbot5 import location
 from telegram import KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import Updater
 from telegram.ext import MessageHandler, Filters
 import requests
 import base64
 import logging
-
+""""
+from flask import send_from_directory
 app = Flask(__name__)
-@app.route('/')
+@app.route('/')"""
 
 
 #Botpress API URL
@@ -17,24 +22,6 @@ botpress_url = "https://tranquil-ridge-44045.herokuapp.com/api/v1/bots/report-ha
 logging.basicConfig(format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s', level = logging.INFO)
 logger = logging.getLogger("botpress_middleman")
 
-#Configura l' updater per la ricezione di messaggi da Telegram TODO: togliere token dal codice
-with open("token.txt") as f:
-    token = f.read().strip()
-updater = Updater(token = token, use_context = "true")
-dispatcher = updater.dispatcher
-
-def location(update: Update, context: CallbackContext) -> int:
-    """Stores the location and asks for some info about the user."""
-    user = update.message.from_user
-    user_location = update.message.location
-    logger.info(
-        "Location of %s: %f / %f", user.first_name, user_location.latitude, user_location.longitude
-    )
-    update.message.reply_text(
-        'Scommetto che è un posto da visitare! Per ultima cosa , dimmi qualcosa di te stessa/o.'
-    )
-
-    return user_location
 
 #Inoltra a Botpress il messaggio dell' utente e gestisce la risposta
 def handle_message(update, context):
@@ -80,9 +67,18 @@ def forward(update, context):
 
     return requests.post(botpress_url + str(user_id), payload).json() #Invio il messaggio a Botpress e restituisco la risposta
     
-
-forward_handler = MessageHandler(Filters.all, handle_message)
-dispatcher.add_handler(forward_handler)
+def main() -> None:
+    """Run the bot."""
+    # Create the Updater and pass it your bot's token.
+    updater = Updater("1830820258:AAFqOmVTWe5YFnKDosW8ihA6SmRk8J0UWGY")
+    # Get the dispatcher to register handlers
+    dispatcher = updater.dispatcher
     
-updater.start_polling()
-updater.idle() #Almeno non si chiude di colpo quando fai ctrl-c
+    forward_handler = MessageHandler(Filters.all, handle_message)
+    dispatcher.add_handler(forward_handler)
+    
+    updater.start_polling()
+    updater.idle() #Almeno non si chiude di colpo quando fai ctrl-c
+    
+if __name__ == '__main__':
+    main()
