@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # pylint: disable=C0116,W0613
 # This program is dedicated to the public domain under the CC0 license.
-"""import flask"""
+import flask
 from convbot5 import location
 from telegram import KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import Updater
@@ -9,10 +9,10 @@ from telegram.ext import MessageHandler, Filters
 import requests
 import base64
 import logging
-""""
+from flask import Flask
 from flask import send_from_directory
 app = Flask(__name__)
-@app.route('/')"""
+
 
 
 #Botpress API URL
@@ -66,7 +66,9 @@ def forward(update, context):
         payload = {"type":"text", "text":"[COORDS]{0}|{1}".format(location["longitude"], location["latitude"])}
 
     return requests.post(botpress_url + str(user_id), payload).json() #Invio il messaggio a Botpress e restituisco la risposta
-    
+
+@app.route('/')
+@app.route('/main')    
 def main() -> None:
     """Run the bot."""
     # Create the Updater and pass it your bot's token.
