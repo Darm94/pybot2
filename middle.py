@@ -9,7 +9,7 @@ from telegram.ext import MessageHandler, Filters
 import requests
 import base64
 import logging
-"""from flask import Flask"""
+from flask import Flask
 from flask import send_from_directory
 app = Flask(__name__)
 
