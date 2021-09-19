@@ -8,6 +8,7 @@ from telegram.ext import Updater
 from telegram.ext import MessageHandler, Filters
 import requests
 import base64
+import os
 import logging
 from flask import Flask
 from flask import send_from_directory
@@ -21,6 +22,9 @@ botpress_url = "https://tranquil-ridge-44045.herokuapp.com/api/v1/bots/report-ha
 #Configura il logger (poi in realtà non lo uso lmao)
 logging.basicConfig(format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s', level = logging.INFO)
 logger = logging.getLogger("botpress_middleman")
+
+#Inizializza Token
+TOKEN = "1830820258:AAFqOmVTWe5YFnKDosW8ihA6SmRk8J0UWGY"
 
 @app.route('/handle_message')
 #Inoltra a Botpress il messaggio dell' utente e gestisce la risposta
@@ -46,7 +50,7 @@ def handle_message(update, context):
             context.bot.send_message(chat_id = chat_id,
                                      text = response["text"])
 
-@app.route('/forward')
+@app.route('/forward', methods=['GET', 'POST', 'PUT'])
 #Inoltra a Botpress il messaggio dell' utente
 def forward(update, context):
     text = update.message.text #None se il messaggio non è solo testo
@@ -71,15 +75,21 @@ def forward(update, context):
 @app.route('/main')    
 def main() -> None:
     """Run the bot."""
+    
+    PORT = int(os.environ.get('PORT', '8443'))
     # Create the Updater and pass it your bot's token.
-    updater = Updater("1830820258:AAFqOmVTWe5YFnKDosW8ihA6SmRk8J0UWGY")
+    updater = Updater(TOKEN)
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
     
     forward_handler = MessageHandler(Filters.all, handle_message)
     dispatcher.add_handler(forward_handler)
     
-    updater.start_polling()
+    # add handlers
+    updater.start_webhook(listen="0.0.0.0",
+                      port=PORT,
+                      url_path=TOKEN,
+                      webhook_url="https://<appname>.herokuapp.com/" + TOKEN)
     updater.idle() #Almeno non si chiude di colpo quando fai ctrl-c
     
 if __name__ == '__main__':
