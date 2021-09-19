@@ -90,7 +90,7 @@ def main() -> None:
     
     # add handlers
     updater.start_webhook(listen="0.0.0.0",
-                      port=PORT,
+                      port=8443,
                       url_path=TOKEN,
                       webhook_url="https://mypybot2.herokuapp.com/" + TOKEN)
     updater.idle() #Almeno non si chiude di colpo quando fai ctrl-c
