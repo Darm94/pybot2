@@ -8,9 +8,7 @@ from telegram.ext import Updater
 from telegram.ext import MessageHandler, Filters
 import requests
 import base64
-import os
 import logging
-
 
 
 
@@ -20,13 +18,6 @@ botpress_url = "https://tranquil-ridge-44045.herokuapp.com/api/v1/bots/report-ha
 #Configura il logger (poi in realtà non lo uso lmao)
 logging.basicConfig(format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s', level = logging.INFO)
 logger = logging.getLogger("botpress_middleman")
-
-#Inizializza Token
-TOKEN = "1830820258:AAFqOmVTWe5YFnKDosW8ihA6SmRk8J0UWGY"
-
-#Inizializza Porta
-PORT = int(os.environ.get('PORT', '8443'))
-    
 
 
 #Inoltra a Botpress il messaggio dell' utente e gestisce la risposta
@@ -76,26 +67,16 @@ def forward(update, context):
    
 def main() -> None:
     """Run the bot."""
-    
-    
-    
-    
     # Create the Updater and pass it your bot's token.
-    updater = Updater(TOKEN)
+    updater = Updater("1830820258:AAFqOmVTWe5YFnKDosW8ihA6SmRk8J0UWGY")
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
     
     forward_handler = MessageHandler(Filters.all, handle_message)
     dispatcher.add_handler(forward_handler)
     
-    # add handlers
-    updater.start_webhook(listen="0.0.0.0",
-                      port=int(PORT),
-                      url_path=TOKEN)
-    updater.bot.setWebhook('https://mypybot2.herokuapp.com' + TOKEN)
+    updater.start_polling()
     updater.idle() #Almeno non si chiude di colpo quando fai ctrl-c
-    
-    
     
 if __name__ == '__main__':
     main()
