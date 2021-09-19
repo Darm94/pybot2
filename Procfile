@@ -1,1 +1,1 @@
-web: gunicorn middle:app $PORT --log-file -
+web: python3 middle.py $PORT 
