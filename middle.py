@@ -27,7 +27,7 @@ logger = logging.getLogger("botpress_middleman")
 TOKEN = "1830820258:AAFqOmVTWe5YFnKDosW8ihA6SmRk8J0UWGY"
 
 #Inizializza Porta
-PORT = int(os.environ.get('PORT', '8443'))
+PORT = int(os.environ.get('PORT', '5000'))
 
 @app.route('/handle_message', methods=['GET', 'POST', 'PUT'])
 #Inoltra a Botpress il messaggio dell' utente e gestisce la risposta
