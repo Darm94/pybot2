@@ -9,7 +9,7 @@ from telegram.ext import MessageHandler, Filters
 import requests
 import base64
 import logging
-from flask import Flask
+"""from flask import Flask"""
 from flask import send_from_directory
 app = Flask(__name__)
 
@@ -22,7 +22,7 @@ botpress_url = "https://tranquil-ridge-44045.herokuapp.com/api/v1/bots/report-ha
 logging.basicConfig(format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s', level = logging.INFO)
 logger = logging.getLogger("botpress_middleman")
 
-@app.route('/handle_message',methods=['GET', 'POST', 'PUT'])
+@app.route('/handle_message')
 #Inoltra a Botpress il messaggio dell' utente e gestisce la risposta
 def handle_message(update, context):
     result = forward(update, context)
@@ -46,7 +46,7 @@ def handle_message(update, context):
             context.bot.send_message(chat_id = chat_id,
                                      text = response["text"])
 
-@app.route('/forward',methods=['GET', 'POST', 'PUT'])
+@app.route('/forward')
 #Inoltra a Botpress il messaggio dell' utente
 def forward(update, context):
     text = update.message.text #None se il messaggio non è solo testo
