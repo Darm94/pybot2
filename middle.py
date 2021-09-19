@@ -89,7 +89,7 @@ def main() -> None:
     updater.start_webhook(listen="0.0.0.0",
                       port=PORT,
                       url_path=TOKEN,
-                      webhook_url="https://<appname>.herokuapp.com/" + TOKEN)
+                      webhook_url="https://mypybot2.herokuapp.com/" + TOKEN)
     updater.idle() #Almeno non si chiude di colpo quando fai ctrl-c
     
 if __name__ == '__main__':
