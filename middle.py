@@ -23,11 +23,7 @@ botpress_url = "https://tranquil-ridge-44045.herokuapp.com/api/v1/bots/report-ha
 logging.basicConfig(format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s', level = logging.INFO)
 logger = logging.getLogger("botpress_middleman")
 
-#Inizializza Token
-TOKEN = "1830820258:AAFqOmVTWe5YFnKDosW8ihA6SmRk8J0UWGY"
 
-#Inizializza Porta
-PORT = int(os.environ.get('PORT', '8443'))
 
 @app.route('/handle_message', methods=['GET', 'POST', 'PUT'])
 #Inoltra a Botpress il messaggio dell' utente e gestisce la risposta
@@ -79,6 +75,13 @@ def forward(update, context):
 def main() -> None:
     """Run the bot."""
     
+    #Inizializza Token
+    TOKEN = "1830820258:AAFqOmVTWe5YFnKDosW8ihA6SmRk8J0UWGY"
+
+    #Inizializza Porta
+    PORT = int(os.environ.get('PORT', '8443'))
+    
+    
     
     # Create the Updater and pass it your bot's token.
     updater = Updater(TOKEN)
@@ -90,10 +93,11 @@ def main() -> None:
     
     # add handlers
     updater.start_webhook(listen="0.0.0.0",
-                      port=8443,
+                      port=PORT,
                       url_path=TOKEN,
                       webhook_url="https://mypybot2.herokuapp.com/" + TOKEN)
     updater.idle() #Almeno non si chiude di colpo quando fai ctrl-c
+    
     
 if __name__ == '__main__':
     main()
