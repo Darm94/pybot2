@@ -26,7 +26,7 @@ logger = logging.getLogger("botpress_middleman")
 #Inizializza Token
 TOKEN = "1830820258:AAFqOmVTWe5YFnKDosW8ihA6SmRk8J0UWGY"
 
-@app.route('/handle_message')
+@app.route('/handle_message', methods=['GET', 'POST', 'PUT'])
 #Inoltra a Botpress il messaggio dell' utente e gestisce la risposta
 def handle_message(update, context):
     result = forward(update, context)
